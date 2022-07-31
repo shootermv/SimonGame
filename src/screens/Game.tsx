@@ -1,6 +1,6 @@
 import {useFocusEffect} from '@react-navigation/native';
 import React, {useEffect, useState, useCallback} from 'react';
-import {StyleSheet, Text, Pressable, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import GameButton from '../components/GameButton';
 import ScoreModal from '../components/ScoreModal';
 import StartButton from '../components/StartButton';
@@ -8,7 +8,7 @@ import {generateSequenceNum} from '../utils';
 
 const Game = () => {
   const [modalVisible, setModalVisible] = useState(false);
-  const [gameStep, setGameStep] = useState(0);
+  const [score, setScore] = useState(0);
   const [userSequence, setUserSequence] = useState('');
   const [realSequence, setRealSequence] = useState('');
   const compareSequences = (user: string, real: string) => {
@@ -17,8 +17,8 @@ const Game = () => {
       console.log('RIGHT:', user, real.slice(0, user.length));
       if (user.length === real.length) {
         setUserSequence(() => {
-          setGameStep(gameStep + 1);
-          return '';
+          setScore(score + 1);
+          return '';// empty user sequence after success
         });
       }
     } else {
@@ -28,20 +28,20 @@ const Game = () => {
     }
   };
   useEffect(() => {
-    if (gameStep) {
-      const nm = generateSequenceNum(gameStep);
+    if (score) {
+      const nm = generateSequenceNum(score);
       setRealSequence(() => {
         console.log('------');
         console.log('generated:', `${realSequence}${nm}`);
         return `${realSequence}${nm}`;
       });
     }
-  }, [gameStep]);
+  }, [score]);
   useEffect(() => {
-    if (userSequence.length && realSequence.length && gameStep) {
+    if (userSequence.length && realSequence.length && score) {
       compareSequences(userSequence, realSequence);
     }
-  }, [userSequence, realSequence, gameStep]);
+  }, [userSequence, realSequence, score]);
   const userPressHandler = useCallback(
     (num: number) => {
       setUserSequence(`${userSequence}${num}`);
@@ -53,7 +53,7 @@ const Game = () => {
     useCallback(() => {
       // when accessnig screen must reset all the state properties
       console.log('RESETING - ', userSequence, realSequence);
-      setGameStep(0);
+      setScore(0);
       setUserSequence('');
       setRealSequence('');
     }, []),
@@ -67,29 +67,29 @@ const Game = () => {
       <View style={styles.center}>
         <GameButton
           userPressHandler={userPressHandler}
-          disabled={!gameStep}
+          disabled={!score}
           num={1}
         />
       </View>
       <View style={styles.startWrap}>
         <GameButton
           userPressHandler={userPressHandler}
-          disabled={!gameStep}
+          disabled={!score}
           num={2}
         />
         <StartButton
-          gameStarted={!!gameStep}
-          startGame={() => setGameStep(1)}/>
+          gameStarted={!!score}
+          startGame={() => setScore(1)}/>
         <GameButton
           userPressHandler={userPressHandler}
-          disabled={!gameStep}
+          disabled={!score}
           num={4}
         />
       </View>
       <View style={styles.center}>
         <GameButton
           userPressHandler={userPressHandler}
-          disabled={!gameStep}
+          disabled={!score}
           num={3}
         />
       </View>
