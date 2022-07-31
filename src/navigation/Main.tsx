@@ -1,13 +1,9 @@
 import React from 'react';
-import {Text} from 'react-native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import Game from '../screens/Game'
+import Scores from '../screens/Scores';
+
 const Stack = createNativeStackNavigator();
-const Game = () => {
-  return <Text>Game</Text>;
-}
-const Scores = () => {
-  return <Text>Scores</Text>;
-}
 const Main = () => {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
