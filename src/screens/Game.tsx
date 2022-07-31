@@ -3,6 +3,7 @@ import React, {useEffect, useState, useCallback} from 'react';
 import {StyleSheet, Text, Pressable, View} from 'react-native';
 import GameButton from '../components/GameButton';
 import ScoreModal from '../components/ScoreModal';
+import StartButton from '../components/StartButton';
 import {generateSequenceNum} from '../utils';
 
 const Game = () => {
@@ -76,14 +77,9 @@ const Game = () => {
           disabled={!gameStep}
           num={2}
         />
-        <Pressable
-          disabled={!!gameStep}
-          style={[styles.button, styles.buttonOpen]}
-          onPress={() => setGameStep(1)}>
-          <Text style={styles.textStyle}>
-            {gameStep ? 'Game Started' : 'Start Game'}
-          </Text>
-        </Pressable>
+        <StartButton
+          gameStarted={!!gameStep}
+          startGame={() => setGameStep(1)}/>
         <GameButton
           userPressHandler={userPressHandler}
           disabled={!gameStep}
@@ -107,9 +103,7 @@ const styles = StyleSheet.create({
     padding: 10,
     elevation: 2,
   },
-  buttonOpen: {
-    backgroundColor: '#F194FF',
-  },
+
   centeredView: {
     flex: 1,
     justifyContent: 'center',
