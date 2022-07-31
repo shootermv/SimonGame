@@ -1,6 +1,6 @@
 import {createSlice} from '@reduxjs/toolkit';
-
-const initialState: any[] = [{username: 'David', score: 12}];
+import {Score} from '../models/Score'
+const initialState: Score[] = [{username: 'David', score: 12}];
 
 export const scoresSlice = createSlice({
   name: 'scores',

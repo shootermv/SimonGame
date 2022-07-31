@@ -1,4 +1,4 @@
-export interface Commit {
+export interface Score {
     username: string,
     score: number
 }
