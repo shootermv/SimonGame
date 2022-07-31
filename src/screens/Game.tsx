@@ -63,6 +63,7 @@ const Game = () => {
       <ScoreModal
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
+        score={score}
       />
       <View style={styles.center}>
         <GameButton

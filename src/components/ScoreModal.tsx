@@ -1,13 +1,26 @@
 import {useNavigation} from '@react-navigation/native';
-import React from 'react';
-import {View, Text, StyleSheet, Modal, Pressable} from 'react-native';
+import React, {useState} from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Modal,
+  Pressable,
+  TextInput,
+} from 'react-native';
+import { useDispatch } from 'react-redux';
+import { add } from '../store/scoresSlice';
 const ScoreModal = ({
   setModalVisible,
   modalVisible,
+  score,
 }: {
   setModalVisible: Function;
   modalVisible: boolean;
+  score: number;
 }) => {
+  const dispatch = useDispatch();
+  const [username, setName] = useState('');
   const navigation = useNavigation();
   return (
     <Modal
@@ -19,11 +32,23 @@ const ScoreModal = ({
       }}>
       <View>
         <View style={styles.modalView}>
-          <Text style={styles.modalText}>Wrong!</Text>
+          <Text style={styles.modalText}>Score: {score}</Text>
+          <Text style={styles.modalText}>Please Enter Your Name:</Text>
+          <TextInput
+            value={username}
+            onChangeText={txt => setName(txt)}
+            style={styles.Input}
+          />
           <Pressable
             style={[styles.button, styles.buttonClose]}
             onPress={() => {
+              // validate
+              if (!username) {
+                return;
+              }
+              dispatch(add({username, score}))
               setModalVisible(!modalVisible);
+              setName('');
               navigation.navigate('Scores');
             }}>
             <Text style={styles.textStyle}>Save Score</Text>
@@ -34,6 +59,11 @@ const ScoreModal = ({
   );
 };
 const styles = StyleSheet.create({
+  Input: {
+    borderWidth: 1,
+    width: 120,
+    marginBottom: 10,
+  },
   modalView: {
     margin: 20,
     backgroundColor: 'white',
