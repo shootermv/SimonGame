@@ -1,18 +1,23 @@
 import React from 'react';
 import {StyleSheet, Text, Pressable} from 'react-native';
+import { useSelector } from 'react-redux';
+import { GameState } from '../store/gameSlice';
 const GameButton = ({
   userPressHandler,
   disabled,
   num,
+  playingBtn,
 }: {
   userPressHandler: Function;
   disabled: boolean;
   num: number;
+  playingBtn: number
 }) => {
+
   return (
     <Pressable
       disabled={disabled}
-      style={styles.button}
+      style={[styles.button, playingBtn === num ? {backgroundColor:'red'} : {}]}
       onPress={() => userPressHandler(num)}>
       <Text style={styles.textStyle}>{num}</Text>
     </Pressable>

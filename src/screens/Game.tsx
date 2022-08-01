@@ -1,97 +1,72 @@
-import {useFocusEffect} from '@react-navigation/native';
-import React, {useEffect, useState, useCallback} from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
+import {useSelector, useDispatch} from 'react-redux';
 import GameButton from '../components/GameButton';
 import ScoreModal from '../components/ScoreModal';
 import StartButton from '../components/StartButton';
-import {generateSequenceNum} from '../utils';
+import {GameState, startGame, userClick} from '../store/gameSlice';
 
 const Game = () => {
-  const [modalVisible, setModalVisible] = useState(false);
-  const [score, setScore] = useState(0);
-  const [userSequence, setUserSequence] = useState('');
-  const [realSequence, setRealSequence] = useState('');
-  const compareSequences = (user: string, real: string) => {
-    console.log('comparing.....');
-    if (user === real.slice(0, user.length)) {
-      console.log('RIGHT:', user, real.slice(0, user.length));
-      if (user.length === real.length) {
-        setUserSequence(() => {
-          setScore(score + 1);
-          return '';// empty user sequence after success
-        });
+  const dispatch = useDispatch();
+  const [playingBtn, setPlayngBtn] = useState(0);
+  const {gameStarted, realSequence} = useSelector(
+    (state: {game: GameState}) => state.game,
+  );
+  const playSequence = () => {
+    const arr = realSequence.split('');
+    let interval = setInterval(() => {
+      let num = arr.shift();
+      if (!num) {
+        clearInterval(interval);
+        setPlayngBtn(0);
+      } else {
+        setPlayngBtn(Number(num));
       }
-    } else {
-      // some charater is worng
-      console.log('WRONG!', user, real.slice(0, user.length));
-      setModalVisible(true);
-    }
+    }, 500);
   };
   useEffect(() => {
-    if (score) {
-      const nm = generateSequenceNum(score);
-      setRealSequence(() => {
-        console.log('------');
-        console.log('generated:', `${realSequence}${nm}`);
-        return `${realSequence}${nm}`;
-      });
+    if (realSequence) {
+      playSequence();
     }
-  }, [score]);
-  useEffect(() => {
-    if (userSequence.length && realSequence.length && score) {
-      compareSequences(userSequence, realSequence);
-    }
-  }, [userSequence, realSequence, score]);
-  const userPressHandler = useCallback(
-    (num: number) => {
-      setUserSequence(`${userSequence}${num}`);
-    },
-    [userSequence],
-  );
-
-  useFocusEffect(
-    useCallback(() => {
-      // when accessnig screen must reset all the state properties
-      console.log('RESETING - ', userSequence, realSequence);
-      setScore(0);
-      setUserSequence('');
-      setRealSequence('');
-    }, []),
-  );
+  }, [realSequence]);
+  const userPressHandler = (num: number) => {
+    dispatch(userClick(num));
+  };
   return (
     <View style={styles.centeredView}>
-      <ScoreModal
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
-        score={score}
-      />
+      <ScoreModal />
       <View style={styles.center}>
         <GameButton
           userPressHandler={userPressHandler}
-          disabled={!score}
+          disabled={!gameStarted || !!playingBtn}
           num={1}
+          playingBtn={playingBtn}
         />
       </View>
       <View style={styles.startWrap}>
         <GameButton
           userPressHandler={userPressHandler}
-          disabled={!score}
+          disabled={!gameStarted || !!playingBtn}
           num={2}
+          playingBtn={playingBtn}
         />
         <StartButton
-          gameStarted={!!score}
-          startGame={() => setScore(1)}/>
+          gameStarted={gameStarted}
+          startGame={() => dispatch(startGame())}
+        />
         <GameButton
           userPressHandler={userPressHandler}
-          disabled={!score}
+          disabled={!gameStarted || !!playingBtn}
           num={4}
+          playingBtn={playingBtn}
         />
       </View>
       <View style={styles.center}>
         <GameButton
           userPressHandler={userPressHandler}
-          disabled={!score}
+          disabled={!gameStarted || !!playingBtn}
           num={3}
+          playingBtn={playingBtn}
         />
       </View>
     </View>
