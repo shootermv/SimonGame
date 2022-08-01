@@ -1,9 +1,9 @@
 import React from 'react';
-import {StyleSheet, Text, Pressable} from 'react-native';
+import {StyleSheet, Text, Pressable, TouchableOpacity} from 'react-native';
 const COLORS = {
   1: {disabled: '#f1eb9c', enabled: '#F4EA56'},
   2: {disabled: '#AABAF2', enabled: 'blue'},
-  3: {disabled: '#006269', enabled: '#08ff08'},
+  3: {disabled: '#7d7', enabled: '#08ff08'},
   4: {disabled: '#b1a2ca', enabled: '#2e1a47'},
 };
 const GameButton = ({
@@ -19,7 +19,7 @@ const GameButton = ({
 }) => {
   
   return (
-    <Pressable
+    <TouchableOpacity
       disabled={disabled}
       style={[
         styles.button,
@@ -31,7 +31,7 @@ const GameButton = ({
       ]}
       onPress={() => userPressHandler(num)}>
       <Text style={styles.textStyle}>{num}</Text>
-    </Pressable>
+    </TouchableOpacity>
   );
 };
 const styles = StyleSheet.create({
