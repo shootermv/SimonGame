@@ -1,11 +1,7 @@
 import React from 'react';
-import {StyleSheet, Text, Pressable, TouchableOpacity} from 'react-native';
-const COLORS = {
-  1: {disabled: '#f1eb9c', enabled: '#F4EA56'},
-  2: {disabled: '#AABAF2', enabled: 'blue'},
-  3: {disabled: '#7d7', enabled: '#08ff08'},
-  4: {disabled: '#b1a2ca', enabled: '#2e1a47'},
-};
+import {StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {COLORS, SOUNDS} from '../constants';
+
 const GameButton = ({
   userPressHandler,
   disabled,
@@ -17,7 +13,6 @@ const GameButton = ({
   num: number;
   playingBtn: number;
 }) => {
-  
   return (
     <TouchableOpacity
       disabled={disabled}
@@ -29,7 +24,10 @@ const GameButton = ({
         },
         playingBtn === num ? {borderColor: 'red', borderWidth: 3} : {},
       ]}
-      onPress={() => userPressHandler(num)}>
+      onPress={() => {
+        userPressHandler(num);
+        SOUNDS[num].play();
+      }}>
       <Text style={styles.textStyle}>{num}</Text>
     </TouchableOpacity>
   );

@@ -13,7 +13,7 @@ const renderItem = ({item}: {item: Score}) => {
   return <Item item={item} />;
 };
 const Scores = () => {
-  const scores = useSelector((state: {scores: Score[]}) => state.scores.slice(0, 10));
+  const scores = useSelector((state: {scores: Score[]}) =>[...state.scores].sort((a, b) => a.score > b.score ).slice(0, 10));
   return (
     <FlatList
       ListHeaderComponent={<ListHeader/>}

@@ -5,7 +5,10 @@ import GameButton from '../components/GameButton';
 import ScoreModal from '../components/ScoreModal';
 import StartButton from '../components/StartButton';
 import {GameState, startGame, userClick} from '../store/gameSlice';
+import Sound from 'react-native-sound';
+import {SOUNDS} from '../constants';
 
+Sound.setCategory('Playback');
 const Game = () => {
   const dispatch = useDispatch();
   const [playingBtn, setPlayngBtn] = useState(0);
@@ -21,7 +24,12 @@ const Game = () => {
         setPlayngBtn(0);
       } else {
         setPlayngBtn(5); // num 5 is none of the buttons but is still playing
-        setTimeout(() => setPlayngBtn(Number(num)), 100);
+
+        setTimeout(() => {
+          //SOUNDS[Number(num)].play();
+          //setTimeout(() => {SOUNDS[Number(num)].release()}, 500)
+          setPlayngBtn(Number(num));
+        }, 100);
       }
     }, 700);
   };
