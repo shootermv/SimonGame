@@ -17,6 +17,7 @@ const GameButton = ({
   num: number;
   playingBtn: number;
 }) => {
+  
   return (
     <Pressable
       disabled={disabled}

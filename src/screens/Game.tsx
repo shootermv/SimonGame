@@ -20,9 +20,10 @@ const Game = () => {
         clearInterval(interval);
         setPlayngBtn(0);
       } else {
-        setPlayngBtn(Number(num));
+        setPlayngBtn(5); // num 5 is none of the buttons but is still playing
+        setTimeout(() => setPlayngBtn(Number(num)), 100);
       }
-    }, 500);
+    }, 700);
   };
   useEffect(() => {
     if (realSequence) {
